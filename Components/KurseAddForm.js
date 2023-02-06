@@ -50,7 +50,7 @@ function KurseAddForm() {
         };
         /* Fehler abfangen */
         try{
-            const response = await axios.post("https://emina.dnet.ch/kurs/", json, config);
+            const response = await axios.post("https://emina.dnet.ch/kurs/?", json, config);
             console.log("error vom adden:" + response);
             handleShowSuccess(true);
             setInputs([]);
@@ -89,7 +89,7 @@ function KurseAddForm() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDozent">
                 <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control required name="nr_dozent" type="number" placeholder="Dozent Nr." onChange={handleChange}/>
+                <Form.Control required name="id_dozent" type="number" placeholder="Dozent Nr." onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>
