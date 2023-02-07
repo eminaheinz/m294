@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
-function KurseEditForm() {
+function DozentenEditForm() {
     
     /* Hier wird die ID in der URL in einer Variable gespeichert */
     const params = useParams();
@@ -37,11 +37,11 @@ function KurseEditForm() {
         getData();
     }, []);
     
-    /* Hier werden die Daten des Kurses von der API geladen. Der API-Call wird asynchron ausgeführt */
+    /* Hier werden die Daten des Dozenten von der API geladen. Der API-Call wird asynchron ausgeführt */
     const getData = async () => {
         /* Fehler abfangen */
         try{
-            const res = await axios.get("https://emina.dnet.ch/kurs/" + id);
+            const res = await axios.get("https://emina.dnet.ch/dozenten/" + id);
             setLoadedValues(res.data.data[0]);
         }catch(err){
             handleShowError(true);
@@ -73,7 +73,7 @@ function KurseEditForm() {
             }
         };
         try{
-            const response = await axios.put("https://emina.dnet.ch/kurs/" + id, json, config);
+            const response = await axios.put("https://emina.dnet.ch/dozenten/" + id, json, config);
             handleShowSuccess(true);
             setInputs([]); 
         }catch(err){
@@ -86,7 +86,7 @@ function KurseEditForm() {
         <div>
         <Alert show={showSuccess} variant="success">
             <p>
-              Kurs wurde erfolgreich aktualisiert.
+              Dozent wurde erfolgreich aktualisiert.
             </p>
         </Alert>
         <Alert show={showError} variant="danger">
@@ -94,35 +94,51 @@ function KurseEditForm() {
               Ein Fehler ist aufgetreten.
             </p>
         </Alert>
-        <h1>Kurs bearbeiten</h1>
+        <h1>Dozent bearbeiten</h1>
         <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formKursNummer">
-                <Form.Label>Kursnummer</Form.Label>
-                <Form.Control name="kursnummer" type="number" placeholder="Kursnummer" defaultValue={loadedValues.kursnummer} onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="formDozentNummer">
+                <Form.Label>Vorname</Form.Label>
+                <Form.Control  name="vorname" type="text" placeholder="Vorname" defaultValue={loadedValues.vorname} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursThema">
-                <Form.Label>Kursthema</Form.Label>
-                <Form.Control name="kursthema" type="text" placeholder="Kursthema" defaultValue={loadedValues.kursthema} onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentThema">
+                <Form.Label>Nachname</Form.Label>
+                <Form.Control  name="nachname" type="text" placeholder="Nachname" defaultValue={loadedValues.nachname} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursInhalt">
-                <Form.Label>Kursinhalt</Form.Label>
-                <Form.Control name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" defaultValue={loadedValues.inhalt} onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentInhalt">
+                <Form.Label>Strasse</Form.Label>
+                <Form.Control  name="strasse" type="text" placeholder="Strasse" defaultValue={loadedValues.strasse} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursDozent">
-                <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control name="id_dozent" type="number" placeholder="Dozent Nr." defaultValue={loadedValues.nr_dozent} onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentDozent">
+                <Form.Label>PLZ</Form.Label>
+                <Form.Control  name="plz" type="text" placeholder="PLZ" defaultValue={loadedValues.plz} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursStartdatum">
-                <Form.Label>Startdatum</Form.Label>
-                <Form.Control type="date" name="startdatum" placeholder="Startdatum" defaultValue={loadedValues.startdatum} onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentStartdatum">
+                <Form.Label>Ort</Form.Label>
+                <Form.Control  type="text" name="ort" placeholder="Ort" defaultValue={loadedValues.ort} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursEnddatum">
-                <Form.Label>Enddatum</Form.Label>
-                <Form.Control type="date" name="enddatum" placeholder="Enddatum" defaultValue={loadedValues.enddatum} onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="formDozentnddatum">
+                <Form.Label>Id Land</Form.Label>
+                <Form.Control  type="number" name="id_land" placeholder="Id_Land" defaultValue={loadedValues.id_land} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursDauer">
-                <Form.Label>Dauer</Form.Label>
-                <Form.Control type="number" name="dauer" placeholder="Dauer" defaultValue={loadedValues.dauer} onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentDauer">
+                <Form.Label>Geschlecht</Form.Label>
+                <Form.Control  type="text" name="geschlecht" placeholder="Geschlecht" defaultValue={loadedValues.geschlecht} onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentDauer">
+                <Form.Label>Telefon Nummer</Form.Label>
+                <Form.Control  type="text" name="telefon" placeholder="Telefon" defaultValue={loadedValues.telefon} onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentDauer">
+                <Form.Label>Handy Nummer</Form.Label>
+                <Form.Control  type="text" name="handy" placeholder="Handy" defaultValue={loadedValues.handy} onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentDauer">
+                <Form.Label>E-Mail Adresse</Form.Label>
+                <Form.Control  type="text" name="email" placeholder="Email" defaultValue={loadedValues.email} onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentDauer">
+                <Form.Label>Geburtsdatum</Form.Label>
+                <Form.Control  type="date" name="geburtsdatum" placeholder="Geburtsdatum" defaultValue={loadedValues.geburtsdatum} onChange={handleChange}/>
             </Form.Group>
             <Button variant="primary" type="submit">
                 Speichern {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}
@@ -132,4 +148,4 @@ function KurseEditForm() {
     );
 }
 
-export default KurseEditForm;
+export default DozentenEditForm;

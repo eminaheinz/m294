@@ -9,7 +9,7 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
 /* Diese Funtion gibt das Formular zum hinzufügen von Einträgen zurück*/
-function KurseAddForm() {
+function DozentAddForm() {
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
     
@@ -50,7 +50,7 @@ function KurseAddForm() {
         };
         /* Fehler abfangen */
         try{
-            const response = await axios.post("https://emina.dnet.ch/kurs/?", json, config);
+            const response = await axios.post("https://emina.dnet.ch/dozenten/?", json, config);
             console.log("error vom adden:" + response);
             handleShowSuccess(true);
             setInputs([]);
@@ -65,7 +65,7 @@ function KurseAddForm() {
         <div>    
         <Alert show={showSuccess} variant="success">
             <p>
-              Kurs wurde erfolgreich erstellt.
+              Dozent wurde erfolgreich erstellt.
             </p>
         </Alert>
         <Alert show={showError} variant="danger">
@@ -73,35 +73,51 @@ function KurseAddForm() {
               Ein Fehler ist aufgetreten.
             </p>
         </Alert>
-        <h1>Kurs hinzufügen</h1>
+        <h1>Dozent hinzufügen</h1>
         <Form className="mt-4" onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formKursNummer">
-                <Form.Label>Kursnummer</Form.Label>
-                <Form.Control required name="kursnummer" type="number" placeholder="Kursnummer" onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="formDozentVorname">
+                <Form.Label>Vorname</Form.Label>
+                <Form.Control required name="vorname" type="text" placeholder="Vorname" onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursThema">
-                <Form.Label>Kursthema</Form.Label>
-                <Form.Control required name="kursthema" type="text" placeholder="Kursthema" onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentNachname">
+                <Form.Label>Nachname</Form.Label>
+                <Form.Control required name="nachname" type="text" placeholder="Nachname" onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursInhalt">
-                <Form.Label>Kursinhalt</Form.Label>
-                <Form.Control required name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentStrasse">
+                <Form.Label>Strasse</Form.Label>
+                <Form.Control required name="strasse" type="text" placeholder="Strasse" onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursDozent">
-                <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control required name="id_dozent" type="number" placeholder="Dozent Nr." onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentPLZ">
+                <Form.Label>PLZ</Form.Label>
+                <Form.Control required name="plz" type="text" placeholder="PLZ" onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursStartdatum">
-                <Form.Label>Startdatum</Form.Label>
-                <Form.Control required type="date" name="startdatum" placeholder="Startdatum" onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="formDozentenOrt">
+                <Form.Label>Ort</Form.Label>
+                <Form.Control required type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursEnddatum">
-                <Form.Label>Enddatum</Form.Label>
-                <Form.Control required type="date" name="enddatum" placeholder="Enddatum" onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="formDozentenidLand">
+                <Form.Label>Id Land</Form.Label>
+                <Form.Control required type="number" name="id_land" placeholder="Id_Land" onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursDauer">
-                <Form.Label>Dauer</Form.Label>
-                <Form.Control required type="number" name="dauer" placeholder="Dauer" onChange={handleChange}/>
+            <Form.Group className="mb-3" controlId="fromDozentGeschlecht">
+                <Form.Label>Geschlecht</Form.Label>
+                <Form.Control required type="text" name="geschlecht" placeholder="Geschlecht" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentTelefon">
+                <Form.Label>Telefon Nummer</Form.Label>
+                <Form.Control required type="text" name="telefon" placeholder="Telefon" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentHandy">
+                <Form.Label>Handy Nummer</Form.Label>
+                <Form.Control required type="text" name="handy" placeholder="Handy" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentEmail">
+                <Form.Label>E-Mail Adresse</Form.Label>
+                <Form.Control required type="text" name="email" placeholder="Email" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="fromDozentGeburtsdatum">
+                <Form.Label>Geburtsdatum</Form.Label>
+                <Form.Control required type="date" name="geburtsdatum" placeholder="Geburtsdatum" onChange={handleChange}/>
             </Form.Group>
             <Button variant="primary" type="submit">
                 Erstellen {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}
@@ -111,4 +127,4 @@ function KurseAddForm() {
     );
 }
 
-export default KurseAddForm;
+export default DozentAddForm;
