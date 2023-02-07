@@ -19,6 +19,9 @@ import Kurse from '../Sites/Kurse/Dashboard';
 import KurseEdit from '../Sites/Kurse/KurseEdit';
 import KurseAdd from '../Sites/Kurse/KurseAdd';
 import Home from '../Sites/Home';
+import Dozenten from '../Sites/Dozenten/Dashboard';
+import DozentenEdit from '../Sites/Dozenten/DozentenEdit';
+import DozentenAdd from '../Sites/Dozenten/DozentenAdd';
 /*import Laender from '../Sites/Laender';
 import Lehrbetriebe from '../Sites/Lehrbetrieb';
 import Lernende from '../Sites/Lernende';
@@ -71,6 +74,9 @@ const Sidebar = () => {
          <Route exact path="/kurse" element={<Kurse />} />
          <Route path="/kurse/edit/:id" element={<KurseEdit />} />
          <Route path="/kurse/add/" element={<KurseAdd />} />
+         <Route exact path="/dozenten" element={<Dozenten />} />
+         <Route exact path="/dozenten/edit/:id" element={<DozentenEdit />} />
+         <Route exact path="/dozenten/add" element={<DozentenAdd />} />
       </Routes>
     </div>
   );
