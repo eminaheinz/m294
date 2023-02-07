@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Select from 'react-select'
 
 /* Bootstrap imports */
 import Form from 'react-bootstrap/Form';
@@ -38,6 +39,13 @@ function KurseAddForm() {
         handleShowSuccess(false);
         createData();
     };
+
+    // Daten der verschiedenen Dozenten speichern
+    const options = [
+        { value: 'chocolate', label: 'Chocolate' },
+        { value: 'strawberry', label: 'Strawberry' },
+        { value: 'vanilla', label: 'Vanilla' }
+      ]
     
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
     const createData = async () => {
@@ -89,10 +97,11 @@ function KurseAddForm() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDozent">
                 <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control required name="id_dozent" type="number" placeholder="Dozent Nr." onChange={handleChange}/>
+                <Select options={options} onChange={handleChange} isMulti/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>
+                <Form.Control></Form.Control>
                 <Form.Control required type="date" name="startdatum" placeholder="Startdatum" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursEnddatum">
