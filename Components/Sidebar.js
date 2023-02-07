@@ -28,9 +28,12 @@ import DozentenAdd from '../Sites/Dozenten/DozentenAdd';
 import Laender from '../Sites/Laender/Dashboard';
 import LaenderEdit from '../Sites/Laender/LaenderEdit';
 import LaenderAdd from '../Sites/Laender/LaenderAdd';
-/*import Laender from '../Sites/Laender';
-import Lehrbetriebe from '../Sites/Lehrbetrieb';
-import Lernende from '../Sites/Lernende';
+
+import Lehrbetriebe from '../Sites/Lehrbetriebe/Dashboard';
+import LehrbetriebeEdit from '../Sites/Lehrbetriebe/LehrbetriebeEdit';
+import LehrbetriebeAdd from '../Sites/Lehrbetriebe/LehrbetriebeAdd';
+
+/*import Lernende from '../Sites/Lernende';
 import Kurs_lernende from '../Sites/Kurs_lernende';
 import Lehrbetrieb_lernende from '../Sites/Lehrbetrieb_lernende';*/
 
@@ -59,7 +62,7 @@ const Sidebar = () => {
             <NavLink exact to="/laender" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="columns">Laender</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/lehrbetrieb" activeClassName="activeClicked">
+            <NavLink exact to="/lehrbetriebe" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="columns">Lehrbetrieb</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/lernende" activeClassName="activeClicked">
@@ -68,7 +71,7 @@ const Sidebar = () => {
             <NavLink exact to="/kurse_lernende" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="columns">Kurse_lernende</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/lehrbetrieb_lernende" activeClassName="activeClicked">
+            <NavLink exact to="/lehrbetriebe_lernende" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="columns">Lehrbetrieb_lernende</CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
@@ -85,6 +88,9 @@ const Sidebar = () => {
          <Route exact path="/laender" element={<Laender />} />
          <Route path="/laender/edit/:id" element={<LaenderEdit />} />
          <Route path="/laender/add" element={<LaenderAdd />} />
+         <Route exact path="/lehrbetriebe" element={<Lehrbetriebe />} />
+         <Route path="/lehrbetriebe/edit/:id" element={<LehrbetriebeEdit />} />
+         <Route path="/lehrbetriebe/add" element={<LehrbetriebeAdd />} />
       </Routes>
     </div>
   );
