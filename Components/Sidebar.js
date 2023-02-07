@@ -33,9 +33,10 @@ import Lehrbetriebe from '../Sites/Lehrbetriebe/Dashboard';
 import LehrbetriebeEdit from '../Sites/Lehrbetriebe/LehrbetriebeEdit';
 import LehrbetriebeAdd from '../Sites/Lehrbetriebe/LehrbetriebeAdd';
 
-/*import Lernende from '../Sites/Lernende';
-import Kurs_lernende from '../Sites/Kurs_lernende';
-import Lehrbetrieb_lernende from '../Sites/Lehrbetrieb_lernende';*/
+import Lernende from '../Sites/Lernende/Dashboard';
+import LernendeEdit from '../Sites/Lernende/LernendeEdit';
+import LernendeAdd from '../Sites/Lernende/LernendeAdd';
+
 
 /* Hier wird die Sidebar erstellt. Ebenso wird hier der Router für die Seiten erstellt. Alle neuen Routen müssen hier definiert werden.*/
 const Sidebar = () => {
@@ -68,29 +69,31 @@ const Sidebar = () => {
             <NavLink exact to="/lernende" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="columns">Lernende</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/kurse_lernende" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Kurse_lernende</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/lehrbetriebe_lernende" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Lehrbetrieb_lernende</CDBSidebarMenuItem>
-            </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
       </CDBSidebar>
       <Routes>
          <Route exact path="/" element={<Home />} />
+
          <Route exact path="/kurse" element={<Kurse />} />
          <Route path="/kurse/edit/:id" element={<KurseEdit />} />
          <Route path="/kurse/add/" element={<KurseAdd />} />
+
          <Route exact path="/dozenten" element={<Dozenten />} />
          <Route path="/dozenten/edit/:id" element={<DozentenEdit />} />
          <Route path="/dozenten/add" element={<DozentenAdd />} />
+
          <Route exact path="/laender" element={<Laender />} />
          <Route path="/laender/edit/:id" element={<LaenderEdit />} />
          <Route path="/laender/add" element={<LaenderAdd />} />
+
          <Route exact path="/lehrbetriebe" element={<Lehrbetriebe />} />
          <Route path="/lehrbetriebe/edit/:id" element={<LehrbetriebeEdit />} />
          <Route path="/lehrbetriebe/add" element={<LehrbetriebeAdd />} />
+
+         <Route exact path="/lernende" element={<Lernende />} />
+         <Route path="/lernende/edit/:id" element={<LernendeEdit />} />
+         <Route path="/lernende/add" element={<LernendeAdd />} />
       </Routes>
     </div>
   );
