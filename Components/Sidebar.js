@@ -15,17 +15,22 @@ import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 
 /* Seiten Importieren */
+import Home from '../Sites/Home';
+
 import Kurse from '../Sites/Kurse/Dashboard';
 import KurseEdit from '../Sites/Kurse/KurseEdit';
 import KurseAdd from '../Sites/Kurse/KurseAdd';
-import Home from '../Sites/Home';
+
 import Dozenten from '../Sites/Dozenten/Dashboard';
 import DozentenEdit from '../Sites/Dozenten/DozentenEdit';
 import DozentenAdd from '../Sites/Dozenten/DozentenAdd';
+
+import Laender from '../Sites/Laender/Dashboard';
+import LaenderEdit from '../Sites/Laender/LaenderEdit';
+import LaenderAdd from '../Sites/Laender/LaenderAdd';
 /*import Laender from '../Sites/Laender';
 import Lehrbetriebe from '../Sites/Lehrbetrieb';
 import Lernende from '../Sites/Lernende';
-import Dozenten from '../Sites/Dozenten';
 import Kurs_lernende from '../Sites/Kurs_lernende';
 import Lehrbetrieb_lernende from '../Sites/Lehrbetrieb_lernende';*/
 
@@ -70,14 +75,17 @@ const Sidebar = () => {
         </CDBSidebarContent>
       </CDBSidebar>
       <Routes>
-         <Route exact path="/" element={<Home />} />
-         <Route exact path="/kurse" element={<Kurse />} />
+         <Route exact path="/" element={<Home />} />
+         <Route exact path="/kurse" element={<Kurse />} />
          <Route path="/kurse/edit/:id" element={<KurseEdit />} />
          <Route path="/kurse/add/" element={<KurseAdd />} />
          <Route exact path="/dozenten" element={<Dozenten />} />
-         <Route exact path="/dozenten/edit/:id" element={<DozentenEdit />} />
-         <Route exact path="/dozenten/add" element={<DozentenAdd />} />
-      </Routes>
+         <Route path="/dozenten/edit/:id" element={<DozentenEdit />} />
+         <Route path="/dozenten/add" element={<DozentenAdd />} />
+         <Route exact path="/laender" element={<Laender />} />
+         <Route path="/laender/edit/:id" element={<LaenderEdit />} />
+         <Route path="/laender/add" element={<LaenderAdd />} />
+      </Routes>
     </div>
   );
 };

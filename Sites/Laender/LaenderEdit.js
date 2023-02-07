@@ -4,20 +4,20 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import BackButton from '../../Components/BackButton';
-import KurseEditForm from '../../Components/Kurse/KurseEditForm';
+import LaenderEditForm from '../../Components/Laender/LaenderEditForm';
 
 
-const KurseEdit = () => {
+const LaenderEdit = () => {
   return (
         <Container>
             <Row>
-                <BackButton route="/kurse/" />
-                <Col lg={7} className="mt-5"><KurseEditForm /></Col>
+                <BackButton route="/Laender/" />
+                <Col lg={7} className="mt-5"><LaenderEditForm /></Col>
             </Row>
         </Container>
    );
 };
   
-export default KurseEdit;
+export default LaenderEdit;
 
 
