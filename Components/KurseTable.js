@@ -67,13 +67,13 @@ function KurseTable() {
             <tbody>
             {kurse.map((row) => {
                 return(
-                <tr key={row.id_kurs}>
-                    <td style={{ padding: '10px'}}>{row.id_kurs}</td>
+                <tr key={row.id}>
+                    <td style={{ padding: '10px'}}>{row.id}</td>
                     <td style={{ padding: '10px'}}>{row.kursthema}</td>
                     <td style={{ padding: '10px'}}>{row.startdatum}</td>
                     <td style={{ padding: '10px'}}>{row.enddatum}</td>
-                    <td><Link className="btn btn-info" to={`/kurse/edit/${row.id_kurs}`}><Pencil color="white" size={15} /></Link></td>
-                    <td><Button onClick={() => openModal(row.id_kurs)} className="btn btn-danger" ><Trash color="white" size={15}/></Button></td>        
+                    <td><Link className="btn btn-info" to={`/kurse/edit/${row.id}`}><Pencil color="white" size={15} /></Link></td>
+                    <td><Button onClick={() => openModal(row.id)} className="btn btn-danger" ><Trash color="white" size={15}/></Button></td>        
                 </tr>);
             })}
             </tbody>
@@ -90,6 +90,7 @@ function KurseTable() {
     
     /* Diese funktion öffnet ein popup*/
     function openModal(id){
+        console.log(id);
         setModalID(id);
         handleShow(true);
     }
@@ -102,6 +103,7 @@ function KurseTable() {
         /* Fehler abfangen */
         try {
             const response = await axios.delete("https://emina.dnet.ch/kurs/" + modalID);
+            console.log(modalID)
             removeDataFromList();
             handleShowSuccess(true);
         }catch(err){
@@ -115,7 +117,7 @@ function KurseTable() {
     const removeDataFromList = () => {
         setKurse(current =>
             current.filter(kurs => {
-              return kurs.id_kurs !== modalID;
+              return kurs.id !== modalID;
             }),
         );
         setModalID("");

@@ -13,7 +13,8 @@ function KurseEditForm() {
     
     /* Hier wird die ID in der URL in einer Variable gespeichert */
     const params = useParams();
-    let id_kurs = params.id;
+    let id = params.id;
+    console.log(params);
       
     /* State für die vorhandenen Werte der jeweiligen Felder */  
     const [loadedValues, setLoadedValues] = useState([]);  
@@ -40,7 +41,7 @@ function KurseEditForm() {
     const getData = async () => {
         /* Fehler abfangen */
         try{
-            const res = await axios.get("https://emina.dnet.ch/kurs/" + id_kurs);
+            const res = await axios.get("https://emina.dnet.ch/kurs/" + id);
             setLoadedValues(res.data.data[0]);
         }catch(err){
             handleShowError(true);
@@ -72,7 +73,7 @@ function KurseEditForm() {
             }
         };
         try{
-            const response = await axios.put("https://emina.dnet.ch/kurs/" + id_kurs, json, config);
+            const response = await axios.put("https://emina.dnet.ch/kurs/" + id, json, config);
             handleShowSuccess(true);
             setInputs([]); 
         }catch(err){
@@ -80,7 +81,6 @@ function KurseEditForm() {
         }
         handleLoading(false);
     };
-
     /* Rendering des Formulars */
     return (
         <div>
@@ -110,7 +110,7 @@ function KurseEditForm() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDozent">
                 <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control name="nr_dozent" type="number" placeholder="Dozent Nr." defaultValue={loadedValues.nr_dozent} onChange={handleChange}/>
+                <Form.Control name="id_dozent" type="number" placeholder="Dozent Nr." defaultValue={loadedValues.nr_dozent} onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>
