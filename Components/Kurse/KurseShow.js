@@ -1,23 +1,26 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Router } from 'react-router-dom';
-import { Routes } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 /* Bootstrap imports */
-import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import { Link } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
+import Modal from 'react-bootstrap/Modal';
 import {Pencil} from 'react-bootstrap-icons';
 import {Trash} from 'react-bootstrap-icons';
 import {PlusCircle} from 'react-bootstrap-icons';
 
-function KurseTable() {
+function KurseShowForm() {
+    
+    /* Hier wird die ID in der URL in einer Variable gespeichert */
+    const params = useParams();
+    let id = params.id;
+    console.log(params);
       
-    /* State für geladenen Kurse*/  
     const [kurse, setKurse] = useState([]);
     
     /* Modal states & handler */
@@ -34,29 +37,64 @@ function KurseTable() {
     /* Loading state & handler */
     const [loading, setLoading] = useState(false);
     const handleLoading = (loadingValue) => setLoading(loadingValue);
+
+    const [loadedValues, setLoadedValues] = useState([]);  
     
+    /* Input state*/  
+    const [inputs, setInputs] = useState([]);
     /* Beim aufrufen der Seite wird die Funktion zum laden der Daten aufgerufen */
     useEffect(() => {
         getData();
     }, []);
     
-    /* Hier werden alle Kurse von der API geladen. Der API-Call wird asynchron ausgeführt */
+    /* Hier werden die Daten des Kurses von der API geladen. Der API-Call wird asynchron ausgeführt */
     const getData = async () => {
-        const res = await axios.get("https://emina.dnet.ch/kurs/");
-        setKurse(res.data.data);
+        /* Fehler abfangen */
+        try{
+            const res = await axios.get("https://emina.dnet.ch/kurse_lernende/" + id);
+            setKurse(res.data.data);
+        }catch(err){
+            handleShowError(true);
+        }  
     };
 
-    /* Hier wird der Header der Tabelle vorbereitet */
+    /* Submit Listener */
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        handleLoading(true);
+        handleShowError(false);
+        handleShowSuccess(false);
+        updateData();
+    };
+    
+    /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
+    const updateData = async () => {
+        const json = JSON.stringify(inputs);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        try{
+            const response = await axios.put("https://emina.dnet.ch/kurse_lernende/" + id, json, config);
+            console.log(response);
+            handleShowSuccess(true);
+            setInputs([]); 
+        }catch(err){
+            handleShowError(true);
+        }
+        handleLoading(false);
+    };
+    /* Rendering des Formulars */
     function renderHeader(){
         return (
             <thead> 
                 <tr>
                     <th>Id</th>
-                    <th>Thema</th>
-                    <th>Startdatum</th>
-                    <th>Enddatum</th>
-                    <th>Lernende die den Kurs Besuchen</th>
-                    <th>Bearbeiten</th>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Note</th>
+                    <th>Note Hinzufügen</th>
                     <th>Löschen</th>
                 </tr>
             </thead>);
@@ -64,24 +102,24 @@ function KurseTable() {
     
     /* Hier wird der Body der Tabelle vorbereitet */
     function renderBody() {
+        console.log(kurse);
         return(
             <tbody>
             {kurse.map((row) => {
                 return(
-                <tr key={row.id}>
-                    <td style={{ padding: '10px'}}>{row.id}</td>
-                    <td style={{ padding: '10px'}}>{row.kursthema}</td>
-                    <td style={{ padding: '10px'}}>{row.startdatum}</td>
-                    <td style={{ padding: '10px'}}>{row.enddatum}</td>
-                    <td><Link className="btn btn-dark" to={`/kurse/show/${row.id}`}>Anzeigen</Link></td>
-                    <td><Link className="btn btn-info" to={`/kurse/edit/${row.id}`}><Pencil color="white" size={15} /></Link></td>
-                    <td><Button onClick={() => openModal(row.id)} className="btn btn-danger" ><Trash color="white" size={15}/></Button></td>        
+                <tr key={row.kl_id}>
+                    <td style={{ padding: '10px'}}>{row.kl_id}</td>
+                    <td style={{ padding: '10px'}}>{row.vorname}</td>
+                    <td style={{ padding: '10px'}}>{row.nachname}</td>
+                    <td style={{ padding: '10px'}}>{row.note}</td>
+                    <td><Link className="btn btn-info" to={`/kurse/show/noteAdd/${row.kl_id}`}><Pencil color="white" size={15} /></Link></td>
+                    <td><Button onClick={() => openModal(row.kl_id)} className="btn btn-danger" ><Trash color="white" size={15}/></Button></td>        
                 </tr>);
             })}
             </tbody>
         ); 
     }
-    
+
     /* Hier wird der Header und der Body der Tabelle zusammen vorbereitet */
     function renderTable() {
         return(<Table striped borderless hover>
@@ -104,8 +142,8 @@ function KurseTable() {
         handleShowSuccess(false);
         /* Fehler abfangen */
         try {
-            const response = await axios.delete("https://emina.dnet.ch/kurs/" + modalID);
-            console.log(modalID)
+            const response = await axios.delete("https://emina.dnet.ch/kurse_lernende/" + modalID);
+            console.log("modalId: " + modalID)
             removeDataFromList();
             handleShowSuccess(true);
         }catch(err){
@@ -129,9 +167,9 @@ function KurseTable() {
     function renderModal(){
         return(<Modal show={show} onHide={() => handleShow(false)}>
             <Modal.Header closeButton>
-              <Modal.Title>Kurs löschen</Modal.Title>
+              <Modal.Title>Lernenden entfernen</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Wollen Sie den ausgewählten Kurs wirklich löschen?</Modal.Body>
+            <Modal.Body>Wollen Sie den ausgewählten Lernenden wirklich entfernen?</Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={() => handleShow(false)}>
                 Abbrechen
@@ -146,7 +184,7 @@ function KurseTable() {
     /* Rendering Tabelle + Popup*/
     return(
         <div>
-            <h1>Kurse Dashboard <Link className="btn btn-primary" to={`/kurse/add`}>Kurs erfassen <PlusCircle color="white" size={15} /></Link></h1>
+            <h1>Lernende in diesem Kurs<Link className="btn btn-primary" to={`/kurse/add`}>Lernende Hinzufügen <PlusCircle color="white" size={15} /></Link></h1>
             <Alert show={showSuccess} variant="success">
                 <p>
                  Kurs wurde erfolgreich entfernt.
@@ -163,4 +201,4 @@ function KurseTable() {
     );
 }
 
-export default KurseTable;
+export default KurseShowForm;

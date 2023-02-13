@@ -20,6 +20,8 @@ import Home from '../Sites/Home';
 import Kurse from '../Sites/Kurse/Dashboard';
 import KurseEdit from '../Sites/Kurse/KurseEdit';
 import KurseAdd from '../Sites/Kurse/KurseAdd';
+import KurseShow from '../Sites/Kurse/KurseShow';
+import NoteAdd from '../Sites/Kurse/NoteAdd';
 
 import Dozenten from '../Sites/Dozenten/Dashboard';
 import DozentenEdit from '../Sites/Dozenten/DozentenEdit';
@@ -78,6 +80,8 @@ const Sidebar = () => {
          <Route exact path="/kurse" element={<Kurse />} />
          <Route path="/kurse/edit/:id" element={<KurseEdit />} />
          <Route path="/kurse/add/" element={<KurseAdd />} />
+         <Route path="/kurse/show/:id" element={<KurseShow />} />
+         <Route path="/kurse/show/noteAdd/:id" element={<NoteAdd />} />
 
          <Route exact path="/dozenten" element={<Dozenten />} />
          <Route path="/dozenten/edit/:id" element={<DozentenEdit />} />
