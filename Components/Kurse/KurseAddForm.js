@@ -12,7 +12,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 /* Diese Funtion gibt das Formular zum hinzufügen von Einträgen zurück*/
 function KurseAddForm() {
-
+    let lernendeID =[];
     const params = useParams();
     let id = params.id;
     console.log(params);
@@ -22,6 +22,7 @@ function KurseAddForm() {
 
     const [dozentenValues, setDozentenValues] = useState([]); 
     const [lernendeValues, setLernendeValues] = useState([]); 
+    const [KursIdValue, setKurseValues] = useState([]); 
     
     /* Error/Success states & handler */
     const [showSuccess, setShowSuccess] = useState(false);
@@ -48,6 +49,16 @@ function KurseAddForm() {
         // this.state.selectValue({ selectedOptions });         
     }
 
+    const handleChangeLernende = (selectedOptions) => {
+        lernendeID = [];
+        for (let i = 0; i<selectedOptions.length; i++)
+        {
+            lernendeID.push(selectedOptions[i]);
+        }
+        //setInputsLernende(values => ({...values, "nr_lernende": selectedOptions.value}))
+        console.log(selectedOptions[0].value);
+    };
+
     /* Submit Listener */
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -55,6 +66,7 @@ function KurseAddForm() {
         handleShowError(false);
         handleShowSuccess(false);
         createData();
+        addLernende();
     };
     // Daten der verschiedenen Dozenten speichern
       function Item(value, label) {    
@@ -65,16 +77,14 @@ function KurseAddForm() {
 
     for (let i = 0; i < dozentenValues.length; i++) 
     {   
-        options.push(new Item(dozentenValues[i].id, dozentenValues[i].vorname))  
-        console.log("vorname:" + dozentenValues[i].vorname)  
+        options.push(new Item(dozentenValues[i].id, dozentenValues[i].vorname))   
     }
 
     let options2 = []
     
     for (let i = 0; i < lernendeValues.length; i++) 
     {   
-        options2.push(new Item(lernendeValues[i].id, lernendeValues[i].vorname))  
-        console.log("vorname Lernende:" + lernendeValues[i].vorname)  
+        options2.push(new Item(lernendeValues[i].id, lernendeValues[i].vorname))   
     }
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
     const createData = async () => {
@@ -98,9 +108,41 @@ function KurseAddForm() {
         handleLoading(false);
     };
 
+    const addLernende = async () => {
+        console.log('Lernende');
+        console.log(lernendeID);
+        let kursID = KursIdValue;
+        console.log(KursIdValue);
+        for (let i = 0; i < lernendeID.length; i++)
+        {
+            console.log(lernendeID[i])
+            //console.log(inputsLernende)
+            let json = {
+                'id_kurs': kursID,
+                'id_lernende': Math.floor(lernendeID[i].value),
+            };
+            console.log(json)
+            /* Headers werden gesetzt */
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            /* Fehler abfangen */
+            try{
+                const response = await axios.post("https://emina.dnet.ch/kurse_lernende/", json, config);
+                handleShowSuccess(true);
+            }catch(err){
+                handleShowError(true);
+            }
+            handleLoading(false);
+        }
+    };
+
     useEffect(() => {
         getData();
         getLernende();
+        getKursID();
     }, []);
 
     const getData = async () => {
@@ -109,9 +151,43 @@ function KurseAddForm() {
     };
 
     const getLernende = async () => {
-        const res = await axios.get("https://emina.dnet.ch/lernende/");
-        setLernendeValues(res.data.data);
+        /* Fehler abfangen */
+        try{
+            const res = await axios.get("https://emina.dnet.ch/lernende/");
+            //console.log(res);
+            setLernendeValues(res.data.data);
+        }catch(err){
+            handleShowError(true);
+        }  
     };
+
+    const getKursID = async () => {
+        /* Fehler abfangen */
+        try{
+            const res = await axios.get("https://emina.dnet.ch/kurs/");
+            let kurseID = res.data.data
+            let ID = 0;
+            for(let i = 0; i < kurseID.length; i++)
+            {
+                console.log('kursID ' + kurseID[i].id)
+                console.log('ID ' + ID)
+                if (parseInt(kurseID[i].id) > parseInt(ID))
+                {
+                    console.log(`${kurseID[i].id} > ${ID}`);
+                    ID = kurseID[i].id;
+                }
+            }
+            console.log(ID);
+            ID++;
+            console.log('id')
+            console.log(ID);
+            setKurseValues(ID)
+            return ID 
+        }catch(err){
+            handleShowError(true);
+        }
+    };
+
 
     /* Rendering des Formulars */
     return (
@@ -146,19 +222,19 @@ function KurseAddForm() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>
-                <Form.Control required type="date" name="startdatum" placeholder="Startdatum" onChange={handleChange}/>
+                <Form.Control type="date" name="startdatum" placeholder="Startdatum" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursEnddatum">
                 <Form.Label>Enddatum</Form.Label>
-                <Form.Control required type="date" name="enddatum" placeholder="Enddatum" onChange={handleChange}/>
+                <Form.Control type="date" name="enddatum" placeholder="Enddatum" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursDauer">
                 <Form.Label>Dauer</Form.Label>
-                <Form.Control required type="number" name="dauer" placeholder="Dauer" onChange={handleChange}/>
+                <Form.Control type="number" name="dauer" placeholder="Dauer" onChange={handleChange}/>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Lernende</Form.Label>        
-                <Select options={options2} isSearchable={true} menuPlacement="top" />     
+                <Select options={options2} isSearchable={true} isMulti menuPlacement="top" onChange={handleChangeLernende}/>     
             </Form.Group>
             <Button variant="primary" type="submit">
                 Erstellen {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}

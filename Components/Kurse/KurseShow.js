@@ -38,10 +38,6 @@ function KurseShowForm() {
     const [loading, setLoading] = useState(false);
     const handleLoading = (loadingValue) => setLoading(loadingValue);
 
-    const [loadedValues, setLoadedValues] = useState([]);  
-    
-    /* Input state*/  
-    const [inputs, setInputs] = useState([]);
     /* Beim aufrufen der Seite wird die Funktion zum laden der Daten aufgerufen */
     useEffect(() => {
         getData();
@@ -58,33 +54,6 @@ function KurseShowForm() {
         }  
     };
 
-    /* Submit Listener */
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        handleLoading(true);
-        handleShowError(false);
-        handleShowSuccess(false);
-        updateData();
-    };
-    
-    /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
-    const updateData = async () => {
-        const json = JSON.stringify(inputs);
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-        try{
-            const response = await axios.put("https://emina.dnet.ch/kurse_lernende/" + id, json, config);
-            console.log(response);
-            handleShowSuccess(true);
-            setInputs([]); 
-        }catch(err){
-            handleShowError(true);
-        }
-        handleLoading(false);
-    };
     /* Rendering des Formulars */
     function renderHeader(){
         return (
@@ -184,7 +153,7 @@ function KurseShowForm() {
     /* Rendering Tabelle + Popup*/
     return(
         <div>
-            <h1>Lernende in diesem Kurs<Link className="btn btn-primary" to={`/kurse/add`}>Lernende Hinzufügen <PlusCircle color="white" size={15} /></Link></h1>
+            <h1>Lernende in diesem Kurs<Link className="btn btn-primary" to={`kursLernenderAdd/`}>Lernende Hinzufügen <PlusCircle color="white" size={15} /></Link></h1>
             <Alert show={showSuccess} variant="success">
                 <p>
                  Kurs wurde erfolgreich entfernt.

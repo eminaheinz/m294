@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from 'react-router-dom';
+import Select from 'react-select'
+
 
 /* Bootstrap imports */
 import Form from 'react-bootstrap/Form';
@@ -18,7 +20,8 @@ function KurseEditForm() {
       
     /* State für die vorhandenen Werte der jeweiligen Felder */  
     const [loadedValues, setLoadedValues] = useState([]);  
-    
+    const [dozentenValues, setDozentenValues] = useState([]);
+
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
     
@@ -35,6 +38,7 @@ function KurseEditForm() {
     /* Beim aufrufen der Seite wird die Funktion zum laden der Daten aufgerufen */
     useEffect(() => {
         getData();
+        getDozenten();
     }, []);
     
     /* Hier werden die Daten des Kurses von der API geladen. Der API-Call wird asynchron ausgeführt */
@@ -47,6 +51,11 @@ function KurseEditForm() {
             handleShowError(true);
         }  
     };
+
+    const getDozenten = async () => {
+        const res = await axios.get("https://emina.dnet.ch/dozenten/");
+        setDozentenValues(res.data.data);
+    };
     
     /* Bei Veränderungen bei einem Textfeld werden die Daten im state gespeichert */
     const handleChange = (event) => {
@@ -54,6 +63,14 @@ function KurseEditForm() {
         const value = event.target.value;
         setInputs(values => ({...values, [name]: value}));
     };
+
+    
+    const handleChangeSelect = (selectedOptions) => {
+        console.log("SO:");
+        console.log(selectedOptions)
+        console.log(selectedOptions.value);
+        setInputs(values => ({...values, "id_dozent": selectedOptions.value}))
+    }
 
     /* Submit Listener */
     const handleSubmit = (event) => {
@@ -63,6 +80,7 @@ function KurseEditForm() {
         handleShowSuccess(false);
         updateData();
     };
+
     
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
     const updateData = async () => {
@@ -81,6 +99,18 @@ function KurseEditForm() {
         }
         handleLoading(false);
     };
+
+    function Item(value, label) {    
+        this.value = value;    
+        this.label = label;    
+    } 
+    let options = []  
+
+    for (let i = 0; i < dozentenValues.length; i++) 
+    {   
+        options.push(new Item(dozentenValues[i].id, dozentenValues[i].vorname))  
+        console.log("vorname:" + dozentenValues[i].vorname)  
+    }
     /* Rendering des Formulars */
     return (
         <div>
@@ -108,9 +138,9 @@ function KurseEditForm() {
                 <Form.Label>Kursinhalt</Form.Label>
                 <Form.Control name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" defaultValue={loadedValues.inhalt} onChange={handleChange}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formKursDozent">
-                <Form.Label>Dozent Nr.</Form.Label>
-                <Form.Control name="id_dozent" type="number" placeholder="Dozent Nr." defaultValue={loadedValues.nr_dozent} onChange={handleChange}/>
+            <Form.Group>
+                <Form.Label>Dozent</Form.Label>        
+                <Select options={options} isSearchable={true} menuPlacement="top" onChange={handleChangeSelect}/>     
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
                 <Form.Label>Startdatum</Form.Label>

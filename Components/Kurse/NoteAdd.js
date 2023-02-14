@@ -32,22 +32,6 @@ function NoteAddForm() {
     const [loading, setLoading] = useState(false);
     const handleLoading = (loadingValue) => setLoading(loadingValue);
 
-    /* Beim aufrufen der Seite wird die Funktion zum laden der Daten aufgerufen */
-    useEffect(() => {
-        getData();
-    }, []);
-    
-    /* Hier werden die Daten des Kurses von der API geladen. Der API-Call wird asynchron ausgeführt */
-    const getData = async () => {
-        /* Fehler abfangen */
-        try{
-            const res = await axios.get("https://emina.dnet.ch/kurse_lernende/" + id);
-            setLoadedValues(res.data.data[0]);
-        }catch(err){
-            handleShowError(true);
-        }  
-    };
-    
     /* Bei Veränderungen bei einem Textfeld werden die Daten im state gespeichert */
     const handleChange = (event) => {
         const name = event.target.name;

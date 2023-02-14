@@ -55,7 +55,7 @@ function KurseTable() {
                     <th>Thema</th>
                     <th>Startdatum</th>
                     <th>Enddatum</th>
-                    <th>Lernende die den Kurs Besuchen</th>
+                    <th>Kursteilnehmer</th>
                     <th>Bearbeiten</th>
                     <th>Löschen</th>
                 </tr>
