@@ -86,39 +86,39 @@ function DozentAddForm() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentStrasse">
                 <Form.Label>Strasse</Form.Label>
-                <Form.Control required name="strasse" type="text" placeholder="Strasse" onChange={handleChange}/>
+                <Form.Control  name="strasse" type="text" placeholder="Strasse" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentPLZ">
                 <Form.Label>PLZ</Form.Label>
-                <Form.Control required name="plz" type="text" placeholder="PLZ" onChange={handleChange}/>
+                <Form.Control  name="plz" type="text" placeholder="PLZ" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDozentenOrt">
                 <Form.Label>Ort</Form.Label>
-                <Form.Control required type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
+                <Form.Control  type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDozentenidLand">
                 <Form.Label>Id Land</Form.Label>
-                <Form.Control required type="number" name="id_land" placeholder="Id_Land" onChange={handleChange}/>
+                <Form.Control  type="number" name="id_land" placeholder="Id_Land" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentGeschlecht">
                 <Form.Label>Geschlecht</Form.Label>
-                <Form.Control required type="text" name="geschlecht" placeholder="Geschlecht" onChange={handleChange}/>
+                <Form.Control  type="text" name="geschlecht" placeholder="Geschlecht" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentTelefon">
                 <Form.Label>Telefon Nummer</Form.Label>
-                <Form.Control required type="text" name="telefon" placeholder="Telefon" onChange={handleChange}/>
+                <Form.Control  type="text" name="telefon" placeholder="Telefon" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentHandy">
                 <Form.Label>Handy Nummer</Form.Label>
-                <Form.Control required type="text" name="handy" placeholder="Handy" onChange={handleChange}/>
+                <Form.Control  type="text" name="handy" placeholder="Handy" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentEmail">
                 <Form.Label>E-Mail Adresse</Form.Label>
-                <Form.Control required type="text" name="email" placeholder="Email" onChange={handleChange}/>
+                <Form.Control  type="text" name="email" placeholder="Email" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentGeburtsdatum">
                 <Form.Label>Geburtsdatum</Form.Label>
-                <Form.Control required type="date" name="geburtsdatum" placeholder="Geburtsdatum" onChange={handleChange}/>
+                <Form.Control  type="date" name="geburtsdatum" placeholder="Geburtsdatum" onChange={handleChange}/>
             </Form.Group>
             <Button variant="primary" type="submit">
                 Erstellen {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}

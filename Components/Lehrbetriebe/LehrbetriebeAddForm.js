@@ -38,7 +38,6 @@ function LehrbetriebAddForm() {
         handleShowSuccess(false);
         createData();
     };
-    
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
     const createData = async () => {
         const json = JSON.stringify(inputs);
@@ -81,15 +80,15 @@ function LehrbetriebAddForm() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromLehrbetriebStrasse">
                 <Form.Label>Strasse</Form.Label>
-                <Form.Control required name="strasse" type="text" placeholder="Strasse" onChange={handleChange}/>
+                <Form.Control  name="strasse" type="text" placeholder="Strasse" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromLehrbetriebPLZ">
                 <Form.Label>PLZ</Form.Label>
-                <Form.Control required name="plz" type="text" placeholder="PLZ" onChange={handleChange}/>
+                <Form.Control  name="plz" type="text" placeholder="PLZ" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formLehrbetriebenOrt">
                 <Form.Label>Ort</Form.Label>
-                <Form.Control required type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
+                <Form.Control  type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
             </Form.Group>
             <Button variant="primary" type="submit">
                 Erstellen {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}

@@ -55,7 +55,6 @@ function KurseAddForm() {
         {
             lernendeID.push(selectedOptions[i]);
         }
-        //setInputsLernende(values => ({...values, "nr_lernende": selectedOptions.value}))
         console.log(selectedOptions[0].value);
     };
 

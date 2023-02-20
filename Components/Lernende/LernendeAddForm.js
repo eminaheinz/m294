@@ -12,7 +12,7 @@ import Spinner from 'react-bootstrap/Spinner';
 /* Diese Funtion gibt das Formular zum hinzufügen von Einträgen zurück*/
 function LernendeAddForm() {
     /* Input state*/  
-    let lernendeID = []
+    let lehrbetriebID;
     const [inputs, setInputs] = useState([]);
     const [lehrbetriebeValues, setlehrbetriebeValues] = useState([]); 
     const [lernendeValues, setLernendeValues] = useState([]); 
@@ -34,6 +34,14 @@ function LernendeAddForm() {
         setInputs(values => ({...values, [name]: value}));
     };
 
+    /*const handleChangeSelect = (selectedOptions) => {
+        console.log("SO:");
+        console.log(selectedOptions)
+        console.log(selectedOptions.value);
+        setInputs(values => ({...values, "id_land": selectedOptions.value}))
+        // this.state.selectValue({ selectedOptions });         
+    }*/
+
     /* Submit Listener */
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -44,12 +52,8 @@ function LernendeAddForm() {
         addLehrbetrieb();
     };
 
-    const handleChangeLernende = (selectedOptions) => {
-        lernendeID = [];
-        for (let i = 0; i<selectedOptions.length; i++)
-        {
-            lernendeID.push(selectedOptions[i]);
-        }
+    const handleChangeLehrbetriebe = (selectedOptions) => {
+        lehrbetriebID = selectedOptions.value;
     };
     
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
@@ -84,24 +88,46 @@ function LernendeAddForm() {
         options.push(new Item(lehrbetriebeValues[i].id, lehrbetriebeValues[i].firma))   
     }
 
-    const getData = async () => {
+    const getLehrbetriebe = async () => {
         const res = await axios.get("https://emina.dnet.ch/lehrbetriebe/");
         setlehrbetriebeValues(res.data.data);
     };
 
+    const getLernendeID = async () => {
+        /* Fehler abfangen */
+        try{
+            const res = await axios.get("https://emina.dnet.ch/lernende/");
+            let lernendenID = res.data.data
+            let ID = 0;
+            for(let i = 0; i < lernendenID.length; i++)
+            {
+                if (parseInt(lernendenID[i].id) > parseInt(ID))
+                {
+                    ID = lernendenID[i].id;
+                }
+            }
+            ID++;
+            setLernendeValues(ID)
+            return ID 
+        }catch(err){
+            handleShowError(true);
+        }
+    };
+
     useEffect(() => {
-        getData();
-        getLernende();
+        getLehrbetriebe();
+        getLernendeID();
     }, []);
 
     
     const addLehrbetrieb = async () => {
-        let lehrbetriebeId = lernendeValues;
-        console.log(lernendeID);
+        let lernendenID = lernendeValues;
+        console.log("LehrbetriebID");
+        console.log(lehrbetriebID);
         //console.log(inputsLernende)
         let json = {
-            'id_lehrbetrieb': Math.floor(lernendeID.value),
-            'id_lernende': lehrbetriebeId,
+            'id_lehrbetrieb': Math.floor(lehrbetriebID),
+            'id_lernende': lernendenID,
         };
         console.log(json)
         /* Headers werden gesetzt */
@@ -119,27 +145,6 @@ function LernendeAddForm() {
         }
         handleLoading(false);
 
-    };
-
-    const getLernende = async () => {
-        /* Fehler abfangen */
-        try{
-            const res = await axios.get("https://emina.dnet.ch/lernende/");
-            let lernendeID = res.data.data
-            let ID = 0;
-            for(let i = 0; i < lernendeID.length; i++)
-            {
-                if (parseInt(lernendeID[i].id) > parseInt(ID))
-                {
-                    ID = lernendeID[i].id;
-                }
-            }
-            ID++;
-            setLernendeValues(ID)
-            return ID 
-        }catch(err){
-            handleShowError(true);
-        }
     };
 
     /* Rendering des Formulars */
@@ -207,7 +212,7 @@ function LernendeAddForm() {
             </Form.Group>
             <Form.Group>
                 <Form.Label>Lehrbetrieb</Form.Label>        
-                <Select options={options} isSearchable={true} menuPlacement="top" onChange={handleChangeLernende}/>     
+                <Select options={options} isSearchable={true} menuPlacement="top" onChange={handleChangeLehrbetriebe}/>     
             </Form.Group> 
             <Button variant="primary" type="submit">
                 Erstellen {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}
