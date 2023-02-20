@@ -14,6 +14,7 @@ function LernendeAddForm() {
     /* Input state*/  
     let lehrbetriebID;
     const [inputs, setInputs] = useState([]);
+    const [laenderValues, setlaenderValues] = useState([]); 
     const [lehrbetriebeValues, setlehrbetriebeValues] = useState([]); 
     const [lernendeValues, setLernendeValues] = useState([]); 
     
@@ -34,13 +35,12 @@ function LernendeAddForm() {
         setInputs(values => ({...values, [name]: value}));
     };
 
-    /*const handleChangeSelect = (selectedOptions) => {
+    const handleChangeSelect = (selectedOptions) => {
         console.log("SO:");
         console.log(selectedOptions)
         console.log(selectedOptions.value);
-        setInputs(values => ({...values, "id_land": selectedOptions.value}))
-        // this.state.selectValue({ selectedOptions });         
-    }*/
+        setInputs(values => ({...values, "id_land": selectedOptions.value}))         
+    }
 
     /* Submit Listener */
     const handleSubmit = (event) => {
@@ -53,6 +53,8 @@ function LernendeAddForm() {
     };
 
     const handleChangeLehrbetriebe = (selectedOptions) => {
+        console.log("SOV");
+        console.log(selectedOptions.value)
         lehrbetriebID = selectedOptions.value;
     };
     
@@ -81,6 +83,14 @@ function LernendeAddForm() {
         this.value = value;    
         this.label = label;    
     } 
+
+    let optionsLaender = []  
+
+    for (let i = 0; i < laenderValues.length; i++) 
+    {   
+        optionsLaender.push(new Item(laenderValues[i].id, laenderValues[i].land))   
+    }
+
     let options = []  
 
     for (let i = 0; i < lehrbetriebeValues.length; i++) 
@@ -92,6 +102,13 @@ function LernendeAddForm() {
         const res = await axios.get("https://emina.dnet.ch/lehrbetriebe/");
         setlehrbetriebeValues(res.data.data);
     };
+
+    const getLaender = async () => {
+        const res = await axios.get("https://emina.dnet.ch/laender/");
+        setlaenderValues(res.data.data);
+    };
+
+    
 
     const getLernendeID = async () => {
         /* Fehler abfangen */
@@ -117,6 +134,7 @@ function LernendeAddForm() {
     useEffect(() => {
         getLehrbetriebe();
         getLernendeID();
+        getLaender();
     }, []);
 
     
@@ -183,8 +201,8 @@ function LernendeAddForm() {
                 <Form.Control   type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formLernendeenidLand">
-                <Form.Label>Id Land</Form.Label>
-                <Form.Control   type="number" name="id_land" placeholder="Id_Land" onChange={handleChange}/>
+                <Form.Label>Land</Form.Label>
+                <Select options={optionsLaender} isSearchable={true} menuPlacement="top" onChange={handleChangeSelect}/>     
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromLernendeGeschlecht">
                 <Form.Label>Geschlecht</Form.Label>

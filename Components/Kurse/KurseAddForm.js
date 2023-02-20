@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Select from 'react-select'
-import { useParams } from 'react-router-dom';
 
 /* Bootstrap imports */
 import Form from 'react-bootstrap/Form';
@@ -13,9 +12,7 @@ import Spinner from 'react-bootstrap/Spinner';
 /* Diese Funtion gibt das Formular zum hinzufügen von Einträgen zurück*/
 function KurseAddForm() {
     let lernendeID =[];
-    const params = useParams();
-    let id = params.id;
-    console.log(params);
+
 
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
@@ -139,12 +136,12 @@ function KurseAddForm() {
     };
 
     useEffect(() => {
-        getData();
+        getDozente();
         getLernende();
         getKursID();
     }, []);
 
-    const getData = async () => {
+    const getDozente = async () => {
         const res = await axios.get("https://emina.dnet.ch/dozenten/");
         setDozentenValues(res.data.data);
     };

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Select from 'react-select'
 
 /* Bootstrap imports */
 import Form from 'react-bootstrap/Form';
@@ -10,8 +11,12 @@ import Spinner from 'react-bootstrap/Spinner';
 
 /* Diese Funtion gibt das Formular zum hinzufügen von Einträgen zurück*/
 function LehrbetriebAddForm() {
+    let lernendeID =[];
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
+
+    const [lernendeValues, setLernendeValues] = useState([]); 
+    const [LehrbetriebIdValue, setLehrbetriebeValues] = useState([]); 
     
     /* Error/Success states & handler */
     const [showSuccess, setShowSuccess] = useState(false);
@@ -37,6 +42,16 @@ function LehrbetriebAddForm() {
         handleShowError(false);
         handleShowSuccess(false);
         createData();
+        addLernende();
+    };
+
+    const handleChangeLernende = (selectedOptions) => {
+        lernendeID = [];
+        for (let i = 0; i<selectedOptions.length; i++)
+        {
+            lernendeID.push(selectedOptions[i]);
+        }
+        console.log(selectedOptions[0].value);
     };
     /* Die Daten werden an die API geschickt. Der API-Call wird asynchron ausgeführt. */
     const createData = async () => {
@@ -58,7 +73,89 @@ function LehrbetriebAddForm() {
         }
         handleLoading(false);
     };
+        const addLernende = async () => {
+        console.log('Lernende');
+        let LehrbetriebID = LehrbetriebIdValue;
+        console.log(lernendeID);
+        console.log(LehrbetriebIdValue);
+        for (let i = 0; i < lernendeID.length; i++)
+        {
+            console.log(lernendeID[i])
+            //console.log(inputsLernende)
+            let json = {
+                'id_lehrbetrieb': LehrbetriebID,
+                'id_lernende': Math.floor(lernendeID[i].value),
+            };
+            console.log(json)
+            /* Headers werden gesetzt */
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            /* Fehler abfangen */
+            try{
+                const response = await axios.post("https://emina.dnet.ch/lehrbetriebe_lernende/", json, config);
+                handleShowSuccess(true);
+            }catch(err){
+                handleShowError(true);
+            }
+            handleLoading(false);
+        }
+    };
 
+    const getLernende = async () => {
+        /* Fehler abfangen */
+        try{
+            const res = await axios.get("https://emina.dnet.ch/lernende/");
+            //console.log(res);
+            setLernendeValues(res.data.data);
+        }catch(err){
+            handleShowError(true);
+        }  
+    };
+    const getLehrbetriebID = async () => {
+        /* Fehler abfangen */
+        try{
+            const res = await axios.get("https://emina.dnet.ch/lehrbetriebe/");
+            let lehrbetriebeID = res.data.data
+            let ID = 0;
+            for(let i = 0; i < lehrbetriebeID.length; i++)
+            {
+                console.log('LehrbetriebID ' + lehrbetriebeID[i].id)
+                console.log('ID ' + ID)
+                if (parseInt(lehrbetriebeID[i].id) > parseInt(ID))
+                {
+                    console.log(`${lehrbetriebeID[i].id} > ${ID}`);
+                    ID = lehrbetriebeID[i].id;
+                }
+            }
+            console.log(ID);
+            ID++;
+            console.log('id')
+            console.log(ID);
+            setLehrbetriebeValues(ID)
+            return ID 
+        }catch(err){
+            handleShowError(true);
+        }
+    };
+
+    useEffect(() => {
+        getLernende();
+        getLehrbetriebID();
+    }, []);
+
+    function Item(value, label) {    
+        this.value = value;    
+        this.label = label;    
+    } 
+
+    let optionsLernende = []    
+    for (let i = 0; i < lernendeValues.length; i++) 
+    {   
+        optionsLernende.push(new Item(lernendeValues[i].id, lernendeValues[i].vorname))   
+    }
     /* Rendering des Formulars */
     return (
         <div>    
@@ -89,6 +186,10 @@ function LehrbetriebAddForm() {
             <Form.Group className="mb-3" controlId="formLehrbetriebenOrt">
                 <Form.Label>Ort</Form.Label>
                 <Form.Control  type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Lernende</Form.Label>        
+                <Select options={optionsLernende} isSearchable={true} isMulti menuPlacement="top" onChange={handleChangeLernende}/>     
             </Form.Group>
             <Button variant="primary" type="submit">
                 Erstellen {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>}
