@@ -145,7 +145,7 @@ function DozentenEditForm() {
                 <Form.Control  type="text" name="ort" placeholder="Ort" defaultValue={loadedValues.ort} onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDozentnddatum">
-                <Form.Label>Id Land</Form.Label>
+                <Form.Label>Land</Form.Label>
                 <Select options={optionsLaender} isSearchable={true} menuPlacement="top" onChange={handleChangeSelect}/>     
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentDauer">

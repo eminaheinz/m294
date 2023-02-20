@@ -197,7 +197,7 @@ function KurseAddForm() {
                 <Form.Control required name="inhalt" as="textarea" rows={3} placeholder="Kursinhalt" onChange={handleChange}/>
             </Form.Group>
             <Form.Group>
-                <Form.Label>Dozent</Form.Label>        
+                <Form.Label>Dozent</Form.Label>
                 <Select options={options} isSearchable={true} menuPlacement="top" onChange={handleChangeSelect}/>     
             </Form.Group>
             <Form.Group className="mb-3" controlId="formKursStartdatum">
