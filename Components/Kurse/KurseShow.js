@@ -47,7 +47,7 @@ function KurseShowForm() {
     const getData = async () => {
         /* Fehler abfangen */
         try{
-            const res = await axios.get("https://emina.dnet.ch/lehrbetriebe_lernende/" + id);
+            const res = await axios.get("https://emina.dnet.ch/kurse_lernende/" + id);
             setKurse(res.data.data);
         }catch(err){
             handleShowError(true);

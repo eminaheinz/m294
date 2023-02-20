@@ -3,7 +3,7 @@ import React from 'react';
 const Home = () => {
   return (
         
-    <h1>VFEI Modul 294</h1>
+    <h1>Kursverwaltung VFEI</h1>
   );
 };
   
