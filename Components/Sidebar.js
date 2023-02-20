@@ -35,6 +35,9 @@ import LaenderAdd from '../Sites/Laender/LaenderAdd';
 import Lehrbetriebe from '../Sites/Lehrbetriebe/Dashboard';
 import LehrbetriebeEdit from '../Sites/Lehrbetriebe/LehrbetriebeEdit';
 import LehrbetriebeAdd from '../Sites/Lehrbetriebe/LehrbetriebeAdd';
+import ShowLernende from '../Sites/Lehrbetriebe/ShowLernende';
+import AddStartEndBeruf from '../Sites/Lehrbetriebe/AddStartEndBeruf';
+import LehrbetriebLernenderAdd from '../Sites/Lehrbetriebe/LehrbetriebeLernenderAdd';
 
 import Lernende from '../Sites/Lernende/Dashboard';
 import LernendeEdit from '../Sites/Lernende/LernendeEdit';
@@ -96,6 +99,9 @@ const Sidebar = () => {
          <Route exact path="/lehrbetriebe" element={<Lehrbetriebe />} />
          <Route path="/lehrbetriebe/edit/:id" element={<LehrbetriebeEdit />} />
          <Route path="/lehrbetriebe/add" element={<LehrbetriebeAdd />} />
+         <Route path="/lehrbetriebe/show/:id" element={<ShowLernende />} />
+         <Route path="/lehrbetriebe/show/AddStartEndBeruf/:id" element={<AddStartEndBeruf />} />
+         <Route path="/lehrbetriebe/show/:id/LehrbetriebLernenderAdd" element={<LehrbetriebLernenderAdd />} />
 
          <Route exact path="/lernende" element={<Lernende />} />
          <Route path="/lernende/edit/:id" element={<LernendeEdit />} />

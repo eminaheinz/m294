@@ -114,22 +114,13 @@ function LernendeAddForm() {
         /* Fehler abfangen */
         try{
             const res = await axios.get("https://emina.dnet.ch/lernende/");
-            let lernendenID = res.data.data
-            let ID = 0;
-            for(let i = 0; i < lernendenID.length; i++)
-            {
-                if (parseInt(lernendenID[i].id) > parseInt(ID))
-                {
-                    ID = lernendenID[i].id;
-                }
-            }
-            ID++;
+            let ID = res.data.ID[0].AUTO_INCREMENT;
             setLernendeValues(ID)
             return ID 
         }catch(err){
             handleShowError(true);
-        }
-    };
+        }
+    };
 
     useEffect(() => {
         getLehrbetriebe();

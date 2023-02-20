@@ -12,8 +12,6 @@ import Spinner from 'react-bootstrap/Spinner';
 /* Diese Funtion gibt das Formular zum hinzufügen von Einträgen zurück*/
 function KurseAddForm() {
     let lernendeID =[];
-
-
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
 
@@ -108,6 +106,7 @@ function KurseAddForm() {
         console.log('Lernende');
         console.log(lernendeID);
         let kursID = KursIdValue;
+        console.log("KursID");
         console.log(KursIdValue);
         for (let i = 0; i < lernendeID.length; i++)
         {
@@ -161,28 +160,13 @@ function KurseAddForm() {
         /* Fehler abfangen */
         try{
             const res = await axios.get("https://emina.dnet.ch/kurs/");
-            let kurseID = res.data.data
-            let ID = 0;
-            for(let i = 0; i < kurseID.length; i++)
-            {
-                console.log('kursID ' + kurseID[i].id)
-                console.log('ID ' + ID)
-                if (parseInt(kurseID[i].id) > parseInt(ID))
-                {
-                    console.log(`${kurseID[i].id} > ${ID}`);
-                    ID = kurseID[i].id;
-                }
-            }
-            console.log(ID);
-            ID++;
-            console.log('id')
-            console.log(ID);
+            let ID = res.data.ID[0].AUTO_INCREMENT;
             setKurseValues(ID)
             return ID 
         }catch(err){
             handleShowError(true);
-        }
-    };
+        }
+    };
 
 
     /* Rendering des Formulars */

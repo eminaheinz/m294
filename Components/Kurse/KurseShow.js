@@ -47,7 +47,7 @@ function KurseShowForm() {
     const getData = async () => {
         /* Fehler abfangen */
         try{
-            const res = await axios.get("https://emina.dnet.ch/kurse_lernende/" + id);
+            const res = await axios.get("https://emina.dnet.ch/lehrbetriebe_lernende/" + id);
             setKurse(res.data.data);
         }catch(err){
             handleShowError(true);
@@ -62,7 +62,7 @@ function KurseShowForm() {
                     <th>Id</th>
                     <th>Vorname</th>
                     <th>Nachname</th>
-                    <th>Note</th>
+                    <th>Beruf</th>
                     <th>Note Hinzufügen</th>
                     <th>Löschen</th>
                 </tr>
@@ -156,7 +156,7 @@ function KurseShowForm() {
             <h1>Lernende in diesem Kurs<Link className="btn btn-primary" to={`kursLernenderAdd/`}>Lernende Hinzufügen <PlusCircle color="white" size={15} /></Link></h1>
             <Alert show={showSuccess} variant="success">
                 <p>
-                 Kurs wurde erfolgreich entfernt.
+                 Lernede/r wurde erfolgreich entfernt.
                 </p>
             </Alert>
             <Alert show={showError} variant="danger">

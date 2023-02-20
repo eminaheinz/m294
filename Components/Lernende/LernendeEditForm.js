@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from 'react-router-dom';
+import Select from 'react-select'
+
 
 /* Bootstrap imports */
 import Form from 'react-bootstrap/Form';
@@ -17,7 +19,8 @@ function LernendeEditForm() {
     console.log(params);
       
     /* State für die vorhandenen Werte der jeweiligen Felder */  
-    const [loadedValues, setLoadedValues] = useState([]);  
+    const [loadedValues, setLoadedValues] = useState([]); 
+    const [laenderValues, setlaenderValues] = useState([]);  
     
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
@@ -35,6 +38,7 @@ function LernendeEditForm() {
     /* Beim aufrufen der Seite wird die Funktion zum laden der Daten aufgerufen */
     useEffect(() => {
         getData();
+        getLaender();
     }, []);
     
     /* Hier werden die Daten des Lernende von der API geladen. Der API-Call wird asynchron ausgeführt */
@@ -47,6 +51,11 @@ function LernendeEditForm() {
             handleShowError(true);
         }  
     };
+
+    const getLaender = async () => {
+        const res = await axios.get("https://emina.dnet.ch/laender/");
+        setlaenderValues(res.data.data);
+    };
     
     /* Bei Veränderungen bei einem Textfeld werden die Daten im state gespeichert */
     const handleChange = (event) => {
@@ -54,6 +63,13 @@ function LernendeEditForm() {
         const value = event.target.value;
         setInputs(values => ({...values, [name]: value}));
     };
+
+    const handleChangeSelect = (selectedOptions) => {
+        console.log("SO:");
+        console.log(selectedOptions)
+        console.log(selectedOptions.value);
+        setInputs(values => ({...values, "id_land": selectedOptions.value}))         
+    }
 
     /* Submit Listener */
     const handleSubmit = (event) => {
@@ -81,6 +97,18 @@ function LernendeEditForm() {
         }
         handleLoading(false);
     };
+
+    function Item(value, label) {    
+        this.value = value;    
+        this.label = label;    
+    } 
+
+    let optionsLaender = []  
+
+    for (let i = 0; i < laenderValues.length; i++) 
+    {   
+        optionsLaender.push(new Item(laenderValues[i].id, laenderValues[i].land))   
+    }
     /* Rendering des Formulars */
     return (
         <div>
@@ -117,8 +145,8 @@ function LernendeEditForm() {
                 <Form.Control  type="text" name="ort" placeholder="Ort" defaultValue={loadedValues.ort} onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formLernendenddatum">
-                <Form.Label>Id Land</Form.Label>
-                <Form.Control  type="number" name="id_land" placeholder="Id_Land" defaultValue={loadedValues.id_land} onChange={handleChange}/>
+                <Form.Label>Land</Form.Label>
+                <Select options={optionsLaender} isSearchable={true} menuPlacement="top" onChange={handleChangeSelect}/>     
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromLernendeDauer">
                 <Form.Label>Geschlecht</Form.Label>

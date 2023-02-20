@@ -13,6 +13,8 @@ import Spinner from 'react-bootstrap/Spinner';
 function DozentAddForm() {
     /* Input state*/  
     const [inputs, setInputs] = useState([]);
+
+    const [laenderValues, setlaenderValues] = useState([]); 
     
     /* Error/Success states & handler */
     const [showSuccess, setShowSuccess] = useState(false);
@@ -30,6 +32,13 @@ function DozentAddForm() {
         const value = event.target.value;
         setInputs(values => ({...values, [name]: value}));
     };
+
+    const handleChangeSelect = (selectedOptions) => {
+        console.log("SO:");
+        console.log(selectedOptions)
+        console.log(selectedOptions.value);
+        setInputs(values => ({...values, "id_land": selectedOptions.value}))         
+    }
 
     /* Submit Listener */
     const handleSubmit = (event) => {
@@ -60,6 +69,27 @@ function DozentAddForm() {
         }
         handleLoading(false);
     };
+
+    const getLaender = async () => {
+        const res = await axios.get("https://emina.dnet.ch/laender/");
+        setlaenderValues(res.data.data);
+    };
+
+    useEffect(() => {
+        getLaender();
+    }, []);
+
+    function Item(value, label) {    
+        this.value = value;    
+        this.label = label;    
+    } 
+
+    let optionsLaender = []  
+
+    for (let i = 0; i < laenderValues.length; i++) 
+    {   
+        optionsLaender.push(new Item(laenderValues[i].id, laenderValues[i].land))   
+    }
 
     /* Rendering des Formulars */
     return (
@@ -97,8 +127,8 @@ function DozentAddForm() {
                 <Form.Control  type="text" name="ort" placeholder="Ort" onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDozentenidLand">
-                <Form.Label>Id Land</Form.Label>
-                <Form.Control  type="number" name="id_land" placeholder="Id_Land" onChange={handleChange}/>
+                <Form.Label>Land</Form.Label>
+                <Select options={optionsLaender} isSearchable={true} menuPlacement="top" onChange={handleChangeSelect}/>     
             </Form.Group>
             <Form.Group className="mb-3" controlId="fromDozentGeschlecht">
                 <Form.Label>Geschlecht</Form.Label>
